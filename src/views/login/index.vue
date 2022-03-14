@@ -6,19 +6,21 @@
       </div>
       <!-- username -->
       <el-form-item>
-        <span class="svg-container"
-          ><el-icon> <avatar /></el-icon
+        <span class="svg-container">
+          <span class="svg-container"> <svg-icon icon="user"></svg-icon> </span
         ></span>
         <el-input placeholder="username" name="username" type="text"></el-input>
       </el-form-item>
       <!-- password -->
       <el-form-item>
-        <span class="svg-container"
-          ><el-icon> <avatar /></el-icon
-        ></span>
+        <span class="svg-container">
+          <span class="svg-container">
+            <svg-icon icon="password"></svg-icon>
+          </span>
+        </span>
         <el-input placeholder="password" name="password" type="text"></el-input>
         <span class="show-pwd"
-          ><el-icon> <avatar /></el-icon
+          ><span class="svg-container"> <svg-icon icon="eye"></svg-icon> </span
         ></span>
       </el-form-item>
 
@@ -28,9 +30,7 @@
   </div>
 </template>
 
-<script setup>
-import { Avatar } from '@element-plus/icons-vue'
-</script>
+<script setup></script>
 
 <style scoped lang="scss">
 $bg: #2d3a4b;
