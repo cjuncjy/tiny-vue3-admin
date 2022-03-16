@@ -20,6 +20,16 @@ module.exports = defineConfig({
       })
     ]
   },
+
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'https://api.imooc-admin.lgdsunday.club/',
+        changeOrigin: true
+      }
+    }
+  },
+
   chainWebpack(config) {
     config.module.rule('svg').exclude.add(resolve('src/assets/icons')).end()
 

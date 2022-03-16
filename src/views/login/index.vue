@@ -1,6 +1,11 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form" :model="loginForm" :rules="loginRules">
+    <el-form
+      class="login-form"
+      :model="loginForm"
+      :rules="loginRules"
+      ref="loginFormRef"
+    >
       <div class="title-container">
         <h3 class="title">用户登录</h3>
       </div>
@@ -41,6 +46,8 @@
       <el-button
         type="primary"
         style="width: 100%; margin-bottom: 30px; height: 40px"
+        :loading="loading"
+        @click="handleLogin(loginFormRef)"
         >登录</el-button
       >
     </el-form>
@@ -50,6 +57,7 @@
 <script setup>
 import { validatePassword } from '@/utils/rules'
 import { ref } from 'vue'
+import { useStore } from 'vuex'
 
 const loginForm = ref({
   username: 'admin',
@@ -68,7 +76,7 @@ const loginRules = ref({
     {
       required: true,
       trigger: 'blur',
-      validator: validatePassword
+      validator: validatePassword()
     }
   ]
 })
@@ -78,6 +86,28 @@ const passwordType = ref('password')
 const onChangePwdType = () => {
   // ref的值这里使用要加.value，template中不用
   passwordType.value = passwordType.value === 'password' ? 'text' : 'password'
+}
+
+const loginFormRef = ref(null) // 会自己去找有没有ref为loginFormRef的引用
+const loading = ref(false)
+
+const store = useStore()
+const handleLogin = async (formEl) => {
+  // 1.表单校验
+  await formEl.validate((valid) => {
+    if (!valid) return
+    loading.value = true
+    store
+      .dispatch('user/login', loginForm.value)
+      .then(() => {
+        loading.value = false
+        // 登录后操作
+      })
+      .catch((err) => {
+        console.log(err)
+        loading.value = false
+      })
+  })
 }
 </script>
 
@@ -100,14 +130,14 @@ $cursor: #fff;
     margin: 0 auto;
     overflow: hidden;
 
-    ::v-deep .el-form-item {
+    :deep(.el-form-item) {
       border: 1px solid rgba(255, 255, 255, 0.1);
       background-color: rgba(0, 0, 0, 0.1);
       border-radius: 5px;
       color: #454545;
     }
 
-    ::v-deep .el-input {
+    :deep(.el-input) {
       display: inline-block;
       height: 47px;
       width: 85%;
