@@ -1,36 +1,85 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form">
+    <el-form class="login-form" :model="loginForm" :rules="loginRules">
       <div class="title-container">
         <h3 class="title">用户登录</h3>
       </div>
       <!-- username -->
-      <el-form-item>
+      <el-form-item prop="username">
         <span class="svg-container">
           <span class="svg-container"> <svg-icon icon="user"></svg-icon> </span
         ></span>
-        <el-input placeholder="username" name="username" type="text"></el-input>
+        <el-input
+          placeholder="username"
+          name="username"
+          type="text"
+          v-model="loginForm.username"
+        ></el-input>
       </el-form-item>
       <!-- password -->
-      <el-form-item>
+      <el-form-item prop="password">
         <span class="svg-container">
           <span class="svg-container">
             <svg-icon icon="password"></svg-icon>
           </span>
         </span>
-        <el-input placeholder="password" name="password" type="text"></el-input>
+        <el-input
+          placeholder="password"
+          name="password"
+          v-model="loginForm.password"
+          :type="passwordType"
+        ></el-input>
         <span class="show-pwd"
-          ><span class="svg-container"> <svg-icon icon="eye"></svg-icon> </span
+          ><span class="svg-container" @click="onChangePwdType">
+            <svg-icon
+              :icon="passwordType === 'password' ? 'eye' : 'eye-open'"
+            ></svg-icon> </span
         ></span>
       </el-form-item>
 
       <!-- 按钮 -->
-      <el-button type="primary" style="width: 100%">登录</el-button>
+      <el-button
+        type="primary"
+        style="width: 100%; margin-bottom: 30px; height: 40px"
+        >登录</el-button
+      >
     </el-form>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { validatePassword } from '@/utils/rules'
+import { ref } from 'vue'
+
+const loginForm = ref({
+  username: 'admin',
+  password: '123456'
+})
+
+const loginRules = ref({
+  username: [
+    {
+      required: true,
+      trigger: 'blur',
+      message: '用户名必填'
+    }
+  ],
+  password: [
+    {
+      required: true,
+      trigger: 'blur',
+      validator: validatePassword
+    }
+  ]
+})
+
+const passwordType = ref('password')
+
+const onChangePwdType = () => {
+  // ref的值这里使用要加.value，template中不用
+  passwordType.value = passwordType.value === 'password' ? 'text' : 'password'
+}
+</script>
 
 <style scoped lang="scss">
 $bg: #2d3a4b;
@@ -98,7 +147,6 @@ $cursor: #fff;
   .show-pwd {
     position: absolute;
     right: 10px;
-    top: 7px;
     font-size: 16px;
     color: $dark_gray;
     cursor: pointer;
