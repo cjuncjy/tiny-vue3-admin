@@ -17,3 +17,23 @@ import NavBar from './components/NavBar.vue'
 import SideBar from './components/SideBar/index.vue'
 import AppMain from './components/AppMain.vue'
 </script>
+
+<style lang="scss" scoped>
+@import '~@/assets/styles/mixin.scss';
+@import '~@/assets/styles/variables.scss';
+
+.app-wrapper {
+  @include clearfix;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.fixed-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: calc(100% - #{$sideBarWidth});
+}
+</style>
