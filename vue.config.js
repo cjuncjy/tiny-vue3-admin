@@ -10,6 +10,17 @@ const { ElementPlusResolver } = require('unplugin-vue-components/resolvers')
 
 module.exports = defineConfig({
   transpileDependencies: true,
+  // 为了修复scss文件中:export导出对象为空的bug，需要设置mode为icss
+  css: {
+    loaderOptions: {
+      css: {
+        // 这里的选项会传递给 css-loader
+        modules: {
+          mode: 'icss'
+        }
+      }
+    }
+  },
   configureWebpack: {
     plugins: [
       AutoImport({
