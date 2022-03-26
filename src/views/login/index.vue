@@ -56,6 +56,7 @@
 
 <script setup>
 import { TOKEN } from '@/constant'
+import { setTimeStamp } from '@/utils/auth'
 import { validatePassword } from '@/utils/rules'
 import { setItem } from '@/utils/storage'
 import { ref } from 'vue'
@@ -111,10 +112,12 @@ const handleLogin = async (formEl) => {
       })
       .catch((err) => {
         console.log(err)
+        // 暂时无法用接口，直接登录
         setItem(TOKEN, 'test-token')
         loading.value = false
         store.commit('user/setToken', 'test-token')
         router.push({ path: '/' })
+        setTimeStamp()
       })
   })
 }

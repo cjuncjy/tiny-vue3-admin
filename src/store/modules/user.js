@@ -1,6 +1,7 @@
 import { getUserInfo, login } from '@/api/sys'
 import { TOKEN } from '@/constant'
 import router from '@/router'
+import { setTimeStamp } from '@/utils/auth'
 import { getItem, removeAllItem, setItem } from '@/utils/storage'
 import md5 from 'md5'
 
@@ -35,6 +36,8 @@ export default {
             this.commit('user/setToken', data.token)
             // 跳转
             router.push('/')
+            // 保存登录时间
+            setTimeStamp()
             resolve(data)
           })
           .catch((err) => {
