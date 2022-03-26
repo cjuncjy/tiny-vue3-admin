@@ -55,8 +55,11 @@
 </template>
 
 <script setup>
+import { TOKEN } from '@/constant'
 import { validatePassword } from '@/utils/rules'
+import { setItem } from '@/utils/storage'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
 const loginForm = ref({
@@ -92,6 +95,9 @@ const loginFormRef = ref(null) // 会自己去找有没有ref为loginFormRef的�
 const loading = ref(false)
 
 const store = useStore()
+
+const router = useRouter()
+
 const handleLogin = async (formEl) => {
   // 1.表单校验
   await formEl.validate((valid) => {
@@ -105,7 +111,10 @@ const handleLogin = async (formEl) => {
       })
       .catch((err) => {
         console.log(err)
+        setItem(TOKEN, 'test-token')
         loading.value = false
+        store.commit('user/setToken', 'test-token')
+        router.push({ path: '/' })
       })
   })
 }

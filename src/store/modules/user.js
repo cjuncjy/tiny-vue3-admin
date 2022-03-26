@@ -34,11 +34,7 @@ export default {
             resolve(data)
           })
           .catch((err) => {
-            // reject(err)
-            // TODO 暂时直接跳转
-            console.log(err)
-            setItem(TOKEN, 'test-token')
-            router.push('/')
+            reject(err)
           })
       })
     }
