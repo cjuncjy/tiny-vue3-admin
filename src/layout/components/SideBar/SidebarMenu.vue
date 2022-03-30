@@ -21,5 +21,3 @@
     </el-menu-item>
   </el-menu>
 </template>
-
-<script setup></script>
