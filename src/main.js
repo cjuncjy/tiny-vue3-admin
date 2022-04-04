@@ -8,12 +8,18 @@ import '@/assets/styles/index.scss'
 import installIcons from '@/assets/icons'
 
 // 导入element的message.scss，解决自动引入导致的样式问题
-import 'element-plus/theme-chalk/src/message.scss'
+// import 'element-plus/theme-chalk/src/message.scss'
+
+// TODO 暂时全量引入element-ui
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 
 // 路由鉴权
 import './permission'
 
 const app = createApp(App)
+
+app.use(ElementPlus)
 
 // 全局注册svg-icon
 installIcons(app)
