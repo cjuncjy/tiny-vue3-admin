@@ -29,7 +29,10 @@ module.exports = defineConfig({
       Components({
         resolvers: [ElementPlusResolver()]
       })
-    ]
+    ],
+    resolve: {
+      fallback: { path: require.resolve('path-browserify') }
+    }
   },
 
   devServer: {
