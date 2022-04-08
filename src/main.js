@@ -13,6 +13,8 @@ import installIcons from '@/assets/icons'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
+import i18n from '@/i18n'
+
 import App from './App.vue'
 
 // 路由鉴权
@@ -23,4 +25,4 @@ const app = createApp(App)
 // 全局注册svg-icon
 installIcons(app)
 
-app.use(store).use(router).use(ElementPlus).mount('#app')
+app.use(store).use(router).use(i18n).use(ElementPlus).mount('#app')
