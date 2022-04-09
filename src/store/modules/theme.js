@@ -1,0 +1,17 @@
+import { DEFAULT_COLOR, MAIN_COLOR } from '@/constant'
+import { getItem, setItem } from '@/utils/storage'
+
+export default {
+  namespaced: true,
+  state: () => ({
+    mainColor: getItem(MAIN_COLOR) || DEFAULT_COLOR
+  }),
+  mutations: {
+    setMainColor(state, newColor) {
+      console.log(123, newColor)
+      state.mainColor = newColor
+      setItem(MAIN_COLOR, newColor)
+    }
+  },
+  actions: {}
+}

@@ -17,7 +17,7 @@ const messages = {
   }
 }
 
-const locale = getItem(LANG)
+const locale = getItem(LANG) || 'zh'
 
 const i18n = createI18n({
   // 使用composition API
