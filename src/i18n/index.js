@@ -1,6 +1,8 @@
 import { createI18n } from 'vue-i18n'
 import zhLocale from './lang/zh'
 import enLocale from './lang/en'
+import { getItem } from '@/utils/storage'
+import { LANG } from '@/constant'
 
 const messages = {
   en: {
@@ -15,7 +17,7 @@ const messages = {
   }
 }
 
-const locale = 'zh'
+const locale = getItem(LANG)
 
 const i18n = createI18n({
   // 使用composition API

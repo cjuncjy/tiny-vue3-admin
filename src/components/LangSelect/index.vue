@@ -31,7 +31,7 @@ import { useStore } from 'vuex'
 defineProps({
   effect: {
     type: String,
-    default: 'drak',
+    default: 'dark',
     validator: function (value) {
       return ['dark', 'light'].indexOf(value) !== -1
     }
@@ -48,7 +48,7 @@ const handleSetLanguage = (lang) => {
   // 修改vuex中的
   store.commit('app/setLanguage', lang)
   // 提示
-  ElMessage.success('更新成功')
+  ElMessage.success(i18n.t('msg.toast.switchLangSuccess'))
 }
 </script>
 

@@ -7,7 +7,8 @@
       ref="loginFormRef"
     >
       <div class="title-container">
-        <h3 class="title">用户登录</h3>
+        <h3 class="title">{{ $t('msg.login.title') }}</h3>
+        <LangSelect class="lang-select"></LangSelect>
       </div>
       <!-- username -->
       <el-form-item prop="username">
@@ -48,8 +49,10 @@
         style="width: 100%; margin-bottom: 30px; height: 40px"
         :loading="loading"
         @click="handleLogin(loginFormRef)"
-        >登录</el-button
+        >{{ $t('msg.login.loginBtn') }}</el-button
       >
+
+      <div class="tips" v-html="$t('msg.login.desc')"></div>
     </el-form>
   </div>
 </template>
@@ -62,18 +65,22 @@ import { setItem } from '@/utils/storage'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import LangSelect from '@/components/LangSelect/index.vue'
+import { useI18n } from 'vue-i18n'
+import { computed } from '@vue/reactivity'
 
 const loginForm = ref({
   username: 'admin',
   password: '123456'
 })
 
-const loginRules = ref({
+const { t } = useI18n()
+const loginRules = computed(() => ({
   username: [
     {
       required: true,
       trigger: 'blur',
-      message: '用户名必填'
+      message: t('msg.login.usernameRule')
     }
   ],
   password: [
@@ -83,7 +90,7 @@ const loginRules = ref({
       validator: validatePassword()
     }
   ]
-})
+}))
 
 const passwordType = ref('password')
 
@@ -165,6 +172,12 @@ $cursor: #fff;
         box-shadow: none;
       }
     }
+
+    .tips {
+      font-size: 16px;
+      color: #fff;
+      line-height: 24px;
+    }
   }
 
   .svg-container {
@@ -193,6 +206,17 @@ $cursor: #fff;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+
+  .lang-select {
+    position: absolute;
+    top: 4px;
+    right: 0;
+    background-color: #fff;
+    font-size: 22px;
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
   }
 }
 </style>
