@@ -64,7 +64,9 @@ const closed = () => {
 
 const confirm = async () => {
   const newStyle = await generateNewStyle(mColor.value)
+  // 写入样式
   writeNewStyle(newStyle)
+  // 更改store的
   store.commit('theme/setMainColor', mColor.value)
   closed()
 }
