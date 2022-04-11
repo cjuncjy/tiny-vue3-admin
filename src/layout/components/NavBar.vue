@@ -5,6 +5,8 @@
     <!-- 面包屑 -->
     <Breadcrumb class="breadcrumb"></Breadcrumb>
     <div class="right-menu">
+      <!-- 全屏 -->
+      <ScreenFull class="right-menu-item hover-effect"></ScreenFull>
       <!-- 主题选择 -->
       <ThemeSelect class="right-menu-item hover-effect"></ThemeSelect>
       <!-- 国际化 -->
@@ -42,6 +44,7 @@ import Hamburger from '@/components/Hamburger/index'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import LangSelect from '@/components/LangSelect/index.vue'
 import ThemeSelect from '@/components/ThemeSelect/index.vue'
+import ScreenFull from '@/components/Screenful/index.vue'
 
 const store = useStore()
 const logout = () => {
