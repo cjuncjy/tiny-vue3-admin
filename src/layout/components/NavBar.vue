@@ -5,6 +5,8 @@
     <!-- 面包屑 -->
     <Breadcrumb class="breadcrumb"></Breadcrumb>
     <div class="right-menu">
+      <!-- 搜索 -->
+      <HeaderSearch class="right-menu-item hover-effect"></HeaderSearch>
       <!-- 全屏 -->
       <ScreenFull class="right-menu-item hover-effect"></ScreenFull>
       <!-- 主题选择 -->
@@ -44,7 +46,8 @@ import Hamburger from '@/components/Hamburger/index'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
 import LangSelect from '@/components/LangSelect/index.vue'
 import ThemeSelect from '@/components/ThemeSelect/index.vue'
-import ScreenFull from '@/components/Screenful/index.vue'
+import ScreenFull from '@/components/Screenfull/index.vue'
+import HeaderSearch from '@/components/HeaderSearch/index.vue'
 
 const store = useStore()
 const logout = () => {

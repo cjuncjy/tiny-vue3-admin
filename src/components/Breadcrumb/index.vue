@@ -32,7 +32,6 @@ const route = useRoute()
 
 const breadcrumbData = ref([])
 const getBreadcrumb = () => {
-  console.log(123)
   // 当前路由的记录
   breadcrumbData.value = route.matched.filter(
     (item) => item.meta && item.meta.title
