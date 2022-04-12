@@ -3,7 +3,51 @@
     <router-view></router-view>
   </div>
 </template>
-<script setup></script>
+<script setup>
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { isTags } from '@/utils/tags'
+import { useStore } from 'vuex'
+import { generateTitle } from '@/utils/i18n'
+
+// 生成title
+const getTitle = (route) => {
+  let title = ''
+
+  if (!route.meta) {
+    const pathArr = route.path.splice('/')
+    title = pathArr[pathArr.length - 1]
+  } else {
+    title = generateTitle(route.meta.title)
+  }
+
+  return title
+}
+
+const route = useRoute()
+const store = useStore()
+// 监听路由
+watch(
+  route,
+  (to, from) => {
+    // 不是所有的路由都需要保存
+    if (!isTags(to.path)) {
+      return
+    }
+    const { fullPath, meta, name, params, path, query } = to
+    store.commit('app/addTagsViewList', {
+      fullPath,
+      meta,
+      name,
+      params,
+      path,
+      query,
+      title: getTitle(to)
+    })
+  },
+  { immediate: true }
+)
+</script>
 
 <style lang="scss" scoped>
 .app-main {
