@@ -1,6 +1,6 @@
 <template>
   <div class="header-search" :class="{ show: isShow }">
-    <div class="svg-icon" @click="onShowClick">
+    <div class="svg-icon" @click.stop="onShowClick">
       <svg-icon class-name="search-icon" icon="search"></svg-icon>
     </div>
 
@@ -15,49 +15,54 @@
       placeholder="search"
       @change="onSelectChange"
     >
-      <el-options
-        v-for="option in 5"
-        :key="option"
-        :label="option"
-        :value="option"
-      ></el-options>
+      <el-option
+        v-for="option in searchOptions"
+        :key="option.item.path"
+        :label="option.item.title.join(' > ')"
+        :value="option.item"
+      ></el-option>
     </el-select>
   </div>
 </template>
 
 <script setup>
 import { filterRoutes } from '@/utils/router'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import Fuse from 'fuse.js'
 import { generateRoutes } from './fuseData'
+import { watchSwitchLang } from '@/utils/i18n'
 
 // 数据源
 const router = useRouter()
-const searchPool = computed(() => {
+let searchPool = computed(() => {
   const myFilterRoutes = filterRoutes(router.getRoutes())
   return generateRoutes(myFilterRoutes)
 })
-console.log(searchPool.value)
 // 搜索库相关
-const fuse = new Fuse(searchPool.value, {
-  // 是否按照优先级排序
-  shouldSort: true,
-  // 匹配长度超过多少才认为是匹配的
-  minMatchCharLength: 1,
-  // 将被搜索的键列表，支持嵌套路径
-  keys: [
-    {
-      name: 'title', // 键
-      weight: 0.7 // 权重
-    },
-    {
-      name: 'path',
-      weight: 0.3
-    }
-  ]
-})
-console.log(fuse)
+let fuse
+
+const initFuse = (searchPool) => {
+  fuse = new Fuse(searchPool.value, {
+    // 是否按照优先级排序
+    shouldSort: true,
+    // 匹配长度超过多少才认为是匹配的
+    minMatchCharLength: 1,
+    // 将被搜索的键列表，支持嵌套路径
+    keys: [
+      {
+        name: 'title', // 键
+        weight: 0.7 // 权重
+      },
+      {
+        name: 'path',
+        weight: 0.3
+      }
+    ]
+  })
+}
+
+initFuse(searchPool)
 
 const isShow = ref(false)
 const search = ref('')
@@ -66,13 +71,46 @@ const onShowClick = () => {
   isShow.value = !isShow.value
 }
 
+// 搜索方法
+const searchOptions = ref([])
 const querySearch = (query) => {
-  console.log('querySearch', fuse.search(query))
+  if (query !== '') {
+    searchOptions.value = fuse.search(query)
+  } else {
+    searchOptions.value = []
+  }
 }
 
-const onSelectChange = () => {
-  console.log('onSelectChange')
+// 选中回调
+const onSelectChange = (val) => {
+  router.push(val.path)
 }
+
+// 关闭search的事件
+const headerSearchSelectRef = ref(null)
+const onClose = () => {
+  headerSearchSelectRef.value?.blur()
+  isShow.value = false
+  searchOptions.value = []
+}
+
+watch(isShow, (val) => {
+  if (val) {
+    headerSearchSelectRef.value.focus()
+    document.body.addEventListener('click', onClose)
+  } else {
+    document.body.removeEventListener('click', onClose)
+  }
+})
+
+watchSwitchLang(() => {
+  searchPool = computed(() => {
+    const routes = filterRoutes(router.getRoutes())
+    return generateRoutes(routes)
+  })
+
+  initFuse(searchPool)
+})
 </script>
 
 <style scoped lang="scss">
