@@ -1,10 +1,8 @@
 <template>
-  <div
-    class="header-search"
-    @click.stop="onShowClick"
-    :class="{ show: isShow }"
-  >
-    <svg-icon class-name="search-icon" icon="search"></svg-icon>
+  <div class="header-search" :class="{ show: isShow }">
+    <div class="svg-icon" @click="onShowClick">
+      <svg-icon class-name="search-icon" icon="search"></svg-icon>
+    </div>
 
     <el-select
       ref="headerSearchSelectRef"
@@ -28,20 +26,21 @@
 </template>
 
 <script setup>
-import { filterRoutes, generateMenus } from '@/utils/router'
+import { filterRoutes } from '@/utils/router'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Fuse from 'fuse.js'
+import { generateRoutes } from './fuseData'
 
 // 数据源
 const router = useRouter()
 const searchPool = computed(() => {
   const myFilterRoutes = filterRoutes(router.getRoutes())
-  return generateMenus(myFilterRoutes)
+  return generateRoutes(myFilterRoutes)
 })
 console.log(searchPool.value)
 // 搜索库相关
-const fuse = new Fuse(searchPool, {
+const fuse = new Fuse(searchPool.value, {
   // 是否按照优先级排序
   shouldSort: true,
   // 匹配长度超过多少才认为是匹配的
@@ -67,8 +66,8 @@ const onShowClick = () => {
   isShow.value = !isShow.value
 }
 
-const querySearch = () => {
-  console.log('querySearch')
+const querySearch = (query) => {
+  console.log('querySearch', fuse.search(query))
 }
 
 const onSelectChange = () => {
@@ -79,6 +78,10 @@ const onSelectChange = () => {
 <style scoped lang="scss">
 .header-search {
   font-size: 0 !important;
+
+  .svg-icon {
+    display: inline-block;
+  }
   :deep(.search-icon) {
     cursor: pointer;
     font-size: 18px;
