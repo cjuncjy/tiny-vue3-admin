@@ -12,17 +12,18 @@
       }"
     >
       {{ tag.title }}
-      <i
-        v-show="!isActive(tag)"
-        class="el-icon-close"
-        @click.prevent.stop="onCloseClick(index)"
-      ></i>
+      {{ index }}
+      <el-icon v-show="!isActive(tag)" @click.prevent.stop="onCloseClick(index)"
+        ><Close
+      /></el-icon>
     </router-link>
   </div>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router'
+import { Close } from '@element-plus/icons-vue'
+
 const route = useRoute()
 
 // 是否被选中
@@ -76,15 +77,15 @@ const onCloseClick = () => {
       }
     }
     // close 按钮
-    .el-icon-close {
+    .el-icon {
       width: 16px;
       height: 16px;
       line-height: 10px;
-      vertical-align: 2px;
       border-radius: 50%;
       text-align: center;
       transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       transform-origin: 100% 50%;
+      vertical-align: middle;
       &:before {
         transform: scale(0.6);
         display: inline-block;
