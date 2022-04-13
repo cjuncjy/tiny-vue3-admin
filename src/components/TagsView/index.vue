@@ -10,21 +10,31 @@
         backgroundColor: isActive(tag) ? $store.getters.cssVar.menuBg : '',
         borderColor: isActive(tag) ? $store.getters.cssVar.menuBg : ''
       }"
+      @contextmenu.prevent="openMenu($event, index)"
     >
       {{ tag.title }}
-      {{ index }}
       <el-icon v-show="!isActive(tag)" @click.prevent.stop="onCloseClick(index)"
         ><Close
       /></el-icon>
     </router-link>
+
+    <ContextMenu
+      v-show="visible"
+      :style="menuStyle"
+      :index="selectIndex"
+    ></ContextMenu>
   </div>
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router'
+import { ref, watch } from 'vue'
 import { Close } from '@element-plus/icons-vue'
+import { useRoute } from 'vue-router'
+import ContextMenu from './ContextMenu.vue'
+import { useStore } from 'vuex'
 
 const route = useRoute()
+const store = useStore()
 
 // 是否被选中
 const isActive = (tag) => {
@@ -32,9 +42,40 @@ const isActive = (tag) => {
 }
 
 // 关闭tag
-const onCloseClick = () => {
-  console.log('onCloseClick')
+const onCloseClick = (index) => {
+  store.commit('app/removeTagsView', {
+    type: 'index',
+    index
+  })
 }
+
+// 鼠标右键
+const visible = ref(false)
+const menuStyle = ref({
+  left: 0,
+  top: 0
+})
+const selectIndex = ref(0)
+const openMenu = (e, index) => {
+  const { x, y } = e
+  menuStyle.value.left = x + 'px'
+  menuStyle.value.top = y + 'px'
+  selectIndex.value = index
+
+  visible.value = true
+}
+
+const closeMenu = () => {
+  visible.value = false
+}
+
+watch(visible, (val) => {
+  if (val) {
+    document.body.addEventListener('click', closeMenu)
+  } else {
+    document.body.removeEventListener('click', closeMenu)
+  }
+})
 </script>
 
 <style lang="scss" scoped>
