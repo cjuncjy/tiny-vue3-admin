@@ -1,8 +1,10 @@
 <template>
   <div class="" @click="onToggle">
-    <svg-icon
-      :icon="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
-    ></svg-icon>
+    <div id="guide-full">
+      <svg-icon
+        :icon="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
+      ></svg-icon>
+    </div>
   </div>
 </template>
 

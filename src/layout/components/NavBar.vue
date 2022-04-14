@@ -5,6 +5,7 @@
     <!-- 面包屑 -->
     <Breadcrumb class="breadcrumb"></Breadcrumb>
     <div class="right-menu">
+      <Guide class="right-menu-item hover-effect"></Guide>
       <!-- 搜索 -->
       <HeaderSearch class="right-menu-item hover-effect"></HeaderSearch>
       <!-- 全屏 -->
@@ -48,6 +49,7 @@ import LangSelect from '@/components/LangSelect/index.vue'
 import ThemeSelect from '@/components/ThemeSelect/index.vue'
 import ScreenFull from '@/components/Screenfull/index.vue'
 import HeaderSearch from '@/components/HeaderSearch/index.vue'
+import Guide from '@/components/Guide/index.vue'
 
 const store = useStore()
 const logout = () => {
